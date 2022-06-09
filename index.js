@@ -80,6 +80,10 @@ const offset = {
         y:0
     },
     mapaShop:{
+        x:204,
+        y:-282
+    },
+    mapaEvilCastle:{
         x:0,
         y:0
     }
@@ -105,7 +109,7 @@ colisionMap.forEach((row, i) =>{
 entradaMap.forEach((row, i,) =>{
     row.forEach((symbol,j)=>{
         if (symbol === 3865 || symbol === 3864 || symbol === 3863|| symbol ===3866|| symbol ===3862|| symbol === 3860
-            || symbol ===3861|| symbol === 3857|| symbol === 3859|| symbol === 3858|| symbol ===1938|| symbol === 1922){
+            || symbol ===3861|| symbol === 3897|| symbol === 3859|| symbol === 3858|| symbol ===1938|| symbol === 1922||symbol===3833){
 
             entradas.push(
                 new Entrada({
@@ -133,7 +137,8 @@ function changeCollisions(index,size,offset) {
 
     colisionMap.forEach((row, i,) => {
         row.forEach((symbol, j) => {
-            if(symbol === 1921 || symbol === 3841|| symbol === 5761|| symbol === 1937||symbol===3856||symbol===1601||symbol=== 1930 ){
+            if(symbol === 1921 || symbol === 3841|| symbol === 5761|| symbol === 1937||symbol===3856||symbol===1601||symbol=== 1930|| symbol === 3857
+            ){
                 boundaries.push(new Boundary({
                     position: {
                         x:j* Boundary.width + offset.x,
@@ -159,8 +164,8 @@ function changeEntradas(index,size,offset) {
     entradaMap.forEach((row, i, ) => {
         row.forEach((symbol, j) => {
             if(symbol === 3865 || symbol === 3864 || symbol === 3863|| symbol ===3866|| symbol ===3862|| symbol === 3860
-                || symbol ===3861|| symbol === 3857|| symbol === 3859|| symbol === 3858|| symbol ===1938|| symbol === 5777
-                || symbol===1922|| symbol===3867|| symbol===1617|| symbol===5778|| symbol===5789||symbol===1947){
+                || symbol ===3861|| symbol === 3859|| symbol === 3858|| symbol ===1938|| symbol === 5777
+                || symbol===1922|| symbol===3867|| symbol===1617|| symbol===5778|| symbol===5789||symbol===1947||symbol === 3897||symbol===3833||symbol===5888){
                 entradas.push(new Entrada({
                     position: {
                         x:j* Entrada.width + offset.x,
@@ -317,7 +322,7 @@ function rectangleEntrada({rectangle1, rectangle3}){
                         background.position.y=-1712
                         break
 
-                    case(entrada.symbol===3857):
+                    case(entrada.symbol===3897):
                         image.src='./img/casa.png'
                         offset.mapaCasa.x=262
                         offset.mapaCasa.y=-259
@@ -441,24 +446,60 @@ function rectangleEntrada({rectangle1, rectangle3}){
                         //evil castle 3865
                     case (entrada.symbol===1947):
                         image.src='./img/Overworld.png'
-                        offset.mapaOverWorld.x=-49
-                        offset.mapaOverWorld.y=-419
+                        offset.mapaOverWorld.x=-26
+                        offset.mapaOverWorld.y=-362
                         changeCollisions(1,40,offset.mapaOverWorld)
                         changeEntradas(1,40,offset.mapaOverWorld)
-                        background.position.x=-49
-                        background.position.y=-419
+                        background.position.x=-26
+                        background.position.y=-362
                         break
 
                     case(entrada.symbol===3864):
                         image.src='./img/shop.png'
-                        offset.mapaShop.x=262
-                        offset.mapaShop.y=-259
-                        changeCollisions(6,20,offset.mapaShop)
-                        changeEntradas(6,20,offset.mapaShop)
-                        background.position.x=262
-                        background.position.y=-259
+                        offset.mapaShop.x=201
+                        offset.mapaShop.y=-285
+                        changeCollisions(7,20,offset.mapaShop)
+                        changeEntradas(7,20,offset.mapaShop)
+                        background.position.x=201
+                        background.position.y=-285
                         break
-                        //1947
+
+                    case (entrada.symbol===3833):
+                        image.src='./img/Overworld.png'
+                        offset.mapaOverWorld.x=-83
+                        offset.mapaOverWorld.y=-161
+                        changeCollisions(1,40,offset.mapaOverWorld)
+                        changeEntradas(1,40,offset.mapaOverWorld)
+                        background.position.x=-83
+                        background.position.y=-161
+                        break
+                    //204 -282
+                    case(entrada.symbol===3865):
+                        image.src='./img/evil castle.png'
+                        offset.mapaEvilCastle.x=-117
+                        offset.mapaEvilCastle.y=-930
+                        changeCollisions(8,40,offset.mapaEvilCastle)
+                        changeEntradas(8,40,offset.mapaEvilCastle)
+                        background.position.x=-117
+                        background.position.y=-930
+                        break
+                    case(entrada.symbol===3866):
+                        image.src='./img/Forest.png'
+                        changeCollisions(2,25,offset.mapaForest)
+                        changeEntradas(9,25,offset.mapaForest)
+                        background.position.x=130
+                        background.position.y=98
+                        break
+                    //5888
+                    case (entrada.symbol===5888):
+                        image.src='./img/Overworld.png'
+                        offset.mapaOverWorld.x=-371
+                        offset.mapaOverWorld.y=-356
+                        changeCollisions(1,40,offset.mapaOverWorld)
+                        changeEntradas(1,40,offset.mapaOverWorld)
+                        background.position.x=-371
+                        background.position.y=-356
+                        break
 
 
 
