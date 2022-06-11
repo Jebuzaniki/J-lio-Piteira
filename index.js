@@ -15,36 +15,7 @@ let entradaMap = []
 for (let i=0; i< entradaCasa[0].length; i+=20){
     entradaMap.push(entradaCasa[0].slice(i,20+i))
 }
-class Entrada{
-    static width=32
-    static height=32
-    constructor({position,symbol}){
-        this.position = position
-        this.width =32
-        this.height =32
-        this.symbol = symbol
 
-    }
-    draw( ){
-        c.fillStyle = 'rgba(0,0,255,0.2)'
-        c.fillRect(this.position.x, this.position.y, this.width, this.height)
-    }
-}
-
-
-class Boundary{
-    static width=32
-    static height=32
-    constructor({position}){
-        this.position = position
-        this.width =32
-        this.height =32
-    }
-    draw( ){
-        c.fillStyle = 'rgba(255,0,0,0.2)'
-        c.fillRect(this.position.x, this.position.y, this.width, this.height)
-    }
-}
 
 let boundaries = []
 let entradas=[]
@@ -149,7 +120,7 @@ function changeCollisions(index,size,offset) {
 
         })
     })
-    movables=[background,...boundaries,...entradas]
+    movables=[background,foreground,...boundaries,...entradas]
 }
 function changeEntradas(index,size,offset) {
     entradaMap = []
@@ -178,44 +149,20 @@ function changeEntradas(index,size,offset) {
 
         })
     })
-    movables=[background,...boundaries,...entradas]
+    movables=[background,foreground,...boundaries,...entradas]
 }
 
 
 const image = new Image()
 image.src='./img/casa.png'
 
+const foregroundImage = new Image()
+foregroundImage.src='./foreground/ForestFG.png'
+
 const playerImage = new Image()
 playerImage.src = './img/mainChar.png'
 
-class Sprite{
-    constructor ({position,image,framesa= { max:1},framesb= { max:1},framesc= { max:1} }){
-        this.position = position
-        this.image = image
-        this.framesa= framesa
-        this.framesb= framesb
-        this.framesc= framesc
-        this.image.onload=() => {
-            this.width = this.image.width / this.framesc.max
-            this.height = this.image.height / this.framesc.max
-        }
-    }
-    draw(){
 
-        c.drawImage(this.image,
-            0,
-            0,
-            (this.image.width/this.framesa.max),
-            (this.image.height/this.framesb.max),
-            (this.position.x),
-            (this.position.y),
-            (this.image.width/this.framesc.max),
-            (this.image.height/this.framesc.max))
-
-
-    }
-
-}
 const player= new Sprite({
     position:{
         x:canvas.width/2-96/4 / 2,
@@ -242,10 +189,17 @@ const background = new Sprite({
     x:offset.mapaCasa.x,
     y:offset.mapaCasa.y
     },
-    image: image,
-    frames:{
-        max:1
-    }
+    image: image
+
+})
+const foreground = new Sprite({
+    position:{
+
+        x:offset.mapaCasa.x,
+        y:offset.mapaCasa.y
+    },
+    image: foregroundImage
+
 })
 
 const keys = {
@@ -278,41 +232,33 @@ function rectangleEntrada({rectangle1, rectangle3}){
         && rectangle1.position.y + rectangle1.height>= rectangle3.position.y
     )
 }
+let drawforeground=false
 //animation-----------------------------------------
     function animate(){
     window.requestAnimationFrame(animate)
         c.clearRect(0,0,canvas.width,canvas.height)
-
         background.draw()
-
-
         boundaries.forEach(boundary => {
-
             boundary.draw()
-
             if(
                 rectangleColision({
                     rectangle1:player,
                     rectangle2:boundary
                 })
-
             ){
                 console.log('coliding')
             }
-
-
         })
         entradas.forEach(entrada => {
             entrada.draw()
-
             if(rectangleEntrada({
                     rectangle1:player,
                     rectangle3:entrada
                 })
             ){
                 switch(true){
-
                     case(entrada.symbol===1938):
+                        drawforeground=false
                         offset.mapaOverWorld.x=208
                         offset.mapaOverWorld.y=-1712
                         image.src='./img/Overworld.png'
@@ -321,8 +267,8 @@ function rectangleEntrada({rectangle1, rectangle3}){
                         background.position.x=208
                         background.position.y=-1712
                         break
-
                     case(entrada.symbol===3897):
+                        drawforeground=false
                         image.src='./img/casa.png'
                         offset.mapaCasa.x=262
                         offset.mapaCasa.y=-259
@@ -331,16 +277,19 @@ function rectangleEntrada({rectangle1, rectangle3}){
                         background.position.x=262
                         background.position.y=-259
                         break
-
                     case(entrada.symbol===3858):
+                        drawforeground=true
                         image.src='./img/Forest.png'
+                        foregroundImage.src='./foreground/ForestFG.png'
                         changeCollisions(2,25,offset.mapaForest)
                         changeEntradas(2,25,offset.mapaForest)
                         background.position.x=130
                         background.position.y=98
+                        foreground.position.x=130
+                        foreground.position.y=98
                         break
-
                     case(entrada.symbol===5777):
+                        drawforeground=false
                         image.src='./img/Overworld.png'
                         offset.mapaOverWorld.x=-56
                         offset.mapaOverWorld.y=-1736
@@ -349,16 +298,19 @@ function rectangleEntrada({rectangle1, rectangle3}){
                         background.position.x=-56
                         background.position.y=-1736
                         break
-
                     case(entrada.symbol===3860):
+                        drawforeground=true
                         image.src='./img/castle.png'
+                        foregroundImage.src='./foreground/castleFG.png'
                         changeCollisions(3,40,offset.mapaCastle)
                         changeEntradas(3,40,offset.mapaCastle)
                         background.position.x=-114
                         background.position.y=-894
+                        foreground.position.x=-114
+                        foreground.position.y=-894
                         break
-
                     case (entrada.symbol===1922):
+                        drawforeground=false
                         image.src='./img/Overworld.png'
                         offset.mapaOverWorld.x=232
                         offset.mapaOverWorld.y=-1313
@@ -367,16 +319,19 @@ function rectangleEntrada({rectangle1, rectangle3}){
                         background.position.x=232
                         background.position.y=-1313
                         break
-
                     case (entrada.symbol===3859):
+                        drawforeground=true
                         image.src='./img/sand sung.png'
+                        foregroundImage.src='./foreground/sand sungFG.png'
                         changeCollisions(4,50,offset.mapaSandSung)
                         changeEntradas(4,50,offset.mapaSandSung)
                         background.position.x=400
                         background.position.y=-1122
+                        foreground.position.x=400
+                        foreground.position.y=-1122
                         break
-
                     case (entrada.symbol===3867):
+                        drawforeground=false
                         image.src='./img/Overworld.png'
                         offset.mapaOverWorld.x=-500
                         offset.mapaOverWorld.y=-1670
@@ -385,8 +340,8 @@ function rectangleEntrada({rectangle1, rectangle3}){
                         background.position.x=-500
                         background.position.y=-1670
                         break
-
                     case (entrada.symbol===1617):
+                        drawforeground=false
                         image.src='./img/Overworld.png'
                         offset.mapaOverWorld.x=-470
                         offset.mapaOverWorld.y=-1316
@@ -395,35 +350,46 @@ function rectangleEntrada({rectangle1, rectangle3}){
                         background.position.x=-470
                         background.position.y=-1316
                         break
-
-                        case (entrada.symbol===3861):
+                    case (entrada.symbol===3861):
+                        drawforeground=true
                         image.src='./img/ruined tower.png'
+                        foregroundImage.src='./foreground/ruined towerFG.png'
                         changeCollisions(5,40,offset.mapaRuinedTower)
                         changeEntradas(5,40,offset.mapaRuinedTower)
                         background.position.x=-120
                         background.position.y=-883
+                        foreground.position.x=-120
+                        foreground.position.y=-883
                         break
-
                     case (entrada.symbol===3862):
+                        drawforeground=true
                         image.src='./img/haunted forest.png'
+                        foregroundImage.src='./foreground/haunted forestFG.png'
                         offset.mapaHauntedForest.x=-441
                         offset.mapaHauntedForest.y=-1560
                         changeCollisions(6,60,offset.mapaHauntedForest)
                         changeEntradas(6,60,offset.mapaHauntedForest)
                         background.position.x=-441
                         background.position.y=-1560
+                        foreground.position.x=-441
+                        foreground.position.y=-1560
                         break
                     case (entrada.symbol===3863):
+                        drawforeground=true
                         image.src='./img/haunted forest.png'
+                        foregroundImage.src='./foreground/haunted forestFG.png'
                         offset.mapaHauntedForest.x=-441
                         offset.mapaHauntedForest.y=24
                         changeCollisions(6,60,offset.mapaHauntedForest)
                         changeEntradas(6,60,offset.mapaHauntedForest)
                         background.position.x=-441
                         background.position.y=24
-                        break
+                        foreground.position.x=-441
+                        foreground.position.y=24
 
+                        break
                     case (entrada.symbol===5778):
+                        drawforeground=false
                         image.src='./img/Overworld.png'
                         offset.mapaOverWorld.x=-86
                         offset.mapaOverWorld.y=-422
@@ -432,8 +398,8 @@ function rectangleEntrada({rectangle1, rectangle3}){
                         background.position.x=-86
                         background.position.y=-422
                         break
-
                     case (entrada.symbol===5789):
+                        drawforeground=false
                         image.src='./img/Overworld.png'
                         offset.mapaOverWorld.x=-83
                         offset.mapaOverWorld.y=-842
@@ -442,9 +408,8 @@ function rectangleEntrada({rectangle1, rectangle3}){
                         background.position.x=-83
                         background.position.y=-842
                         break
-
-                        //evil castle 3865
                     case (entrada.symbol===1947):
+                        drawforeground=false
                         image.src='./img/Overworld.png'
                         offset.mapaOverWorld.x=-26
                         offset.mapaOverWorld.y=-362
@@ -453,8 +418,8 @@ function rectangleEntrada({rectangle1, rectangle3}){
                         background.position.x=-26
                         background.position.y=-362
                         break
-
                     case(entrada.symbol===3864):
+                        drawforeground=false
                         image.src='./img/shop.png'
                         offset.mapaShop.x=201
                         offset.mapaShop.y=-285
@@ -463,8 +428,8 @@ function rectangleEntrada({rectangle1, rectangle3}){
                         background.position.x=201
                         background.position.y=-285
                         break
-
                     case (entrada.symbol===3833):
+                        drawforeground=false
                         image.src='./img/Overworld.png'
                         offset.mapaOverWorld.x=-83
                         offset.mapaOverWorld.y=-161
@@ -473,25 +438,33 @@ function rectangleEntrada({rectangle1, rectangle3}){
                         background.position.x=-83
                         background.position.y=-161
                         break
-                    //204 -282
                     case(entrada.symbol===3865):
+                        drawforeground=true
                         image.src='./img/evil castle.png'
+                        foregroundImage.src='./foreground/evil castleFG.png'
                         offset.mapaEvilCastle.x=-117
                         offset.mapaEvilCastle.y=-930
                         changeCollisions(8,40,offset.mapaEvilCastle)
                         changeEntradas(8,40,offset.mapaEvilCastle)
                         background.position.x=-117
                         background.position.y=-930
+                        foreground.position.x=-117
+                        foreground.position.y=-930
                         break
                     case(entrada.symbol===3866):
+                        drawforeground=true
                         image.src='./img/Forest.png'
+                        foregroundImage.src='./foreground/ForestFG.png'
                         changeCollisions(2,25,offset.mapaForest)
                         changeEntradas(9,25,offset.mapaForest)
                         background.position.x=130
                         background.position.y=98
+                        foreground.position.x=130
+                        foreground.position.y=98
                         break
-                    //5888
+
                     case (entrada.symbol===5888):
+                        drawforeground=false
                         image.src='./img/Overworld.png'
                         offset.mapaOverWorld.x=-371
                         offset.mapaOverWorld.y=-356
@@ -500,38 +473,12 @@ function rectangleEntrada({rectangle1, rectangle3}){
                         background.position.x=-371
                         background.position.y=-356
                         break
-
-
-
-                    //forest 2
-                    /*case(entrada.symbol===3866):
-                        image.src='./img/Forest.png'
-                        changeCollisions(2,25,offset.mapaForest)
-                        changeEntradas(2,25,offset.mapaForest)
-                        background.position.x=130
-                        background.position.y=98
-                        break*/
-
-
-
-
-
-
-
-
                 }
-
-
-
-
-
-
-
-
-
             }
         })
         player.draw()
+        if(drawforeground===true){
+        foreground.draw()}
        console.log(background.position.x,background.position.y)
 
 
