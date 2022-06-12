@@ -500,7 +500,23 @@ let drawforeground=false
                     moving=true
                     break
                 }}
+            /*for (let i = 0;i < entradas.length; i++){
+                        let  entrada=entradas[i]
+                        if(rectangleEntrada({
+                            rectangle1:player,
+                            rectangle3: {...entrada, position:{
+                                    x:entrada.position.x,
+                                    y:entrada.position.y+3
+                                }}
+                        })
+                        ){
+                            if(entrada.symbol === 3865 || entrada.symbol === 3864 || entrada.symbol === 3863|| entrada.symbol ===3866|| entrada.symbol ===3862|| entrada.symbol === 3860
+                                || entrada.symbol ===3861|| entrada.symbol === 3857|| entrada.symbol === 3859|| entrada.symbol === 3858|| entrada.symbol ===1937)
+                            console.log('entrar!')
 
+
+
+                        }}*/
 
             if(moving)
             movables.forEach((movable) => { movable.position.y+=3})
