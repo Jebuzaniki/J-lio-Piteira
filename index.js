@@ -159,31 +159,46 @@ image.src='./img/casa.png'
 const foregroundImage = new Image()
 foregroundImage.src='./foreground/ForestFG.png'
 
-const playerImage = new Image()
-playerImage.src = './img/mainChar.png'
+const playerDownImage = new Image()
+playerDownImage.src = './img/mainCharF.png'
+
+const playerUpImage = new Image()
+playerUpImage.src = './img/mainCharU.png'
+
+const playerRightImage = new Image()
+playerRightImage.src = './img/mainCharR.png'
+
+const playerLeftImage = new Image()
+playerLeftImage.src = './img/mainCharL.png'
 
 
 const player= new Sprite({
     position:{
-        x:canvas.width/2-96/4 / 2,
-        y:canvas.height/2-128/2
+        x:canvas.width/2-96/2 / 2,
+        y:canvas.height/2-32/2
     },
-    image:playerImage,
-    framesa:{
+    image:playerDownImage,
+    frames:{
         max:3
     },
-    framesb:{
-        max:4
+
+    sprites:{
+        up:playerUpImage,
+        down:playerDownImage,
+        left:playerLeftImage,
+        right:playerRightImage
     },
-    framesc:{
-        max:2.3
+    framesS:{
+        max: 1.5
     }
+
 
 })
 
 
 
 const background = new Sprite({
+
     position:{
 
     x:offset.mapaCasa.x,
@@ -485,7 +500,11 @@ let drawforeground=false
 
         //movimento-velocidade
         let moving=true
+
+        player.moving=false
         if(keys.w.pressed && lastKey==='w') {
+            player.moving=true
+            player.image= player.sprites.up
             for (let i = 0;i < boundaries.length; i++){
                 let boundary=boundaries[i]
                 if(rectangleColision({
@@ -521,7 +540,11 @@ let drawforeground=false
             if(moving)
             movables.forEach((movable) => { movable.position.y+=3})
         }
-        else if(keys.a.pressed && lastKey==='a') {for (let i = 0;i < boundaries.length; i++){
+        else if(keys.a.pressed && lastKey==='a') {
+            player.moving=true
+            player.image= player.sprites.right
+
+            for (let i = 0;i < boundaries.length; i++){
             let boundary=boundaries[i]
             if(rectangleColision({
                 rectangle1:player,
@@ -542,6 +565,9 @@ let drawforeground=false
         }
 
         else if(keys.s.pressed && lastKey==='s') {
+            player.moving=true
+            player.image= player.sprites.down
+
             for (let i = 0;i < boundaries.length; i++){
                 let boundary=boundaries[i]
                 if(rectangleColision({
@@ -562,6 +588,9 @@ let drawforeground=false
 
         }
         else if(keys.d.pressed && lastKey==='d') {
+            player.moving=true
+            player.image= player.sprites.left
+
             for (let i = 0;i < boundaries.length; i++){
                 let boundary=boundaries[i]
                 if(rectangleColision({
