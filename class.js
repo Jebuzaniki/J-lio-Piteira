@@ -1,5 +1,5 @@
 class Sprite{
-    constructor ({position,image,frames= { max:1},sprites,framesS= { max:1} }){
+    constructor ({position,image,frames= { max:1},sprites,framesS= { max:1,h:1,w:1} }){
         this.position = position
         this.image = image
         this.frames= {...frames, val:0, elapsed:0}
@@ -17,12 +17,12 @@ class Sprite{
             this.image,
             this.frames.val *this.width,
             0,
-            (this.image.width/this.frames.max ),
+            (this.image.width/this.frames.max),
             (this.image.height),
             (this.position.x),
             (this.position.y),
-            (this.image.width/*this.framesS.max*/),
-            (this.image.height/* *this.framesS.max*/)
+            (this.image.width/this.frames.max*this.framesS.w),
+            (this.image.height/this.frames.max*this.framesS.h)
         )
         if (!this.moving) return
             if (this.frames.max > 1) {
@@ -43,7 +43,8 @@ class Sprite{
 class Entrada{
     static width=32
     static height=32
-    constructor({position,symbol}){
+    constructor({position,symbol,color}){
+        this.color=color
         this.position = position
         this.width =32
         this.height =32
@@ -51,8 +52,9 @@ class Entrada{
 
     }
     draw( ){
+        if(this.color==='blu'){
         c.fillStyle = 'rgba(0,0,255,0.2)'
-        c.fillRect(this.position.x, this.position.y, this.width, this.height)
+        c.fillRect(this.position.x, this.position.y, this.width, this.height)}
     }
 }
 
@@ -60,13 +62,18 @@ class Entrada{
 class Boundary{
     static width=32
     static height=32
-    constructor({position}){
+    constructor({position,color}){
+        this.color=color
         this.position = position
         this.width =32
         this.height =32
     }
-    draw( ){
+    draw(){
+        if(this.color==='red'){
         c.fillStyle = 'rgba(255,0,0,0.2)'
-        c.fillRect(this.position.x, this.position.y, this.width, this.height)
+        c.fillRect(this.position.x, this.position.y, this.width, this.height)}
+        if(this.color==='green'){
+            c.fillStyle = 'rgba(0,255,0,0.2)'
+            c.fillRect(this.position.x, this.position.y, this.width, this.height)}
     }
 }

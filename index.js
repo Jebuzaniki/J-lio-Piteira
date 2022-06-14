@@ -15,13 +15,16 @@ let entradaMap = []
 for (let i=0; i< entradaCasa[0].length; i+=20){
     entradaMap.push(entradaCasa[0].slice(i,20+i))
 }
-
-
+let battleMap=[]
+for (let i=0; i< colisionsCasa[0].length; i+=20) {
+    battleMap.push(colisionsCasa[0].slice(i, 20 + i))
+}
 let boundaries = []
 let entradas=[]
+let battles=[]
 const offset = {
     mapaCasa : {
-        x:400,
+        x:336,
         y:32
     },
     mapaOverWorld: {
@@ -35,12 +38,12 @@ const offset = {
     },
     mapaCastle:{
 
-        x:-114,
-        y:-901
+        x:-123,
+        y:-863
     },
     mapaSandSung:{
         x:400,
-        y:-1120
+        y:-1000
     },
     mapaRuinedTower:{
         x:-120,
@@ -52,7 +55,7 @@ const offset = {
     },
     mapaShop:{
         x:204,
-        y:-282
+        y:-232
     },
     mapaEvilCastle:{
         x:0,
@@ -60,12 +63,29 @@ const offset = {
     }
 
 }
+    battleMap.forEach((row, i) =>{
+        row.forEach((symbol,j)=>{
+            if (symbol === 0 ) {
+              battles.push(
+                    new Boundary({
+                        color:'green',
+                        position: {
+                            x: j * Boundary.width + offset.mapaCasa.x,
+                            y: i * Boundary.height + offset.mapaCasa.y
+                        }
+                    })
+                )
+            }
+        })
+    })
+
 
 colisionMap.forEach((row, i) =>{
     row.forEach((symbol,j)=>{
         if (symbol === 1921 || symbol === 3841 ) {
             boundaries.push(
                 new Boundary({
+                    color:'red',
                     position: {
                         x: j * Boundary.width + offset.mapaCasa.x,
                         y: i * Boundary.height + offset.mapaCasa.y
@@ -84,7 +104,9 @@ entradaMap.forEach((row, i,) =>{
 
             entradas.push(
                 new Entrada({
+                    color:'blu',
                     position:{
+
                         x:j* Entrada.width + offset.mapaCasa.x,
                         y:i* Entrada.height+ offset.mapaCasa.y,
 
@@ -95,7 +117,32 @@ entradaMap.forEach((row, i,) =>{
         }
     })
 })
+    function changeBattleArea(index,size,offset) {
+       battleMap = []
 
+        for(let  i = 0; i < colisionsCasa[index].length; i += size) {
+            battleMap.push(colisionsCasa[index].slice(i, size + i))
+
+        }
+
+       battles=[]
+
+        battleMap.forEach((row, i,) => {
+            row.forEach((symbol, j) => {
+                if(symbol ===0){
+                    battles.push(new Boundary({
+                        color:'green',
+                        position: {
+                            x:j* Boundary.width + offset.x,
+                            y:i* Boundary.height+ offset.y
+                        }}))
+
+                }
+
+            })
+        })
+        movables=[background,foreground,...boundaries,...entradas,...battles]
+    }
 function changeCollisions(index,size,offset) {
     colisionMap = []
 
@@ -111,6 +158,7 @@ function changeCollisions(index,size,offset) {
             if(symbol === 1921 || symbol === 3841|| symbol === 5761|| symbol === 1937||symbol===3856||symbol===1601||symbol=== 1930|| symbol === 3857
             ){
                 boundaries.push(new Boundary({
+                    color:'red',
                     position: {
                         x:j* Boundary.width + offset.x,
                         y:i* Boundary.height+ offset.y
@@ -120,7 +168,7 @@ function changeCollisions(index,size,offset) {
 
         })
     })
-    movables=[background,foreground,...boundaries,...entradas]
+    movables=[background,foreground,...boundaries,...entradas,...battles]
 }
 function changeEntradas(index,size,offset) {
     entradaMap = []
@@ -138,6 +186,7 @@ function changeEntradas(index,size,offset) {
                 || symbol ===3861|| symbol === 3859|| symbol === 3858|| symbol ===1938|| symbol === 5777
                 || symbol===1922|| symbol===3867|| symbol===1617|| symbol===5778|| symbol===5789||symbol===1947||symbol === 3897||symbol===3833||symbol===5888){
                 entradas.push(new Entrada({
+                    color:'blu',
                     position: {
                         x:j* Entrada.width + offset.x,
                         y:i* Entrada.height+ offset.y
@@ -149,7 +198,7 @@ function changeEntradas(index,size,offset) {
 
         })
     })
-    movables=[background,foreground,...boundaries,...entradas]
+    movables=[background,foreground,...boundaries,...entradas,...battles]
 }
 
 
@@ -189,7 +238,9 @@ const player= new Sprite({
         right:playerRightImage
     },
     framesS:{
-        max: 1.5
+        max: 3,
+        w:1.7,
+        h:4
     }
 
 
@@ -232,7 +283,7 @@ const keys = {
     }
 }
 
-let movables=[background,...boundaries,...entradas]
+let movables=[background,...boundaries,...entradas,...battles,foreground]
 function rectangleColision({rectangle1, rectangle2}){
     return(rectangle1.position.x + rectangle1.width >= rectangle2.position.x
         && rectangle1.position.x<= rectangle2.position.x+ rectangle2.width
@@ -248,11 +299,25 @@ function rectangleEntrada({rectangle1, rectangle3}){
     )
 }
 let drawforeground=false
+let battlezone=false
 //animation-----------------------------------------
     function animate(){
     window.requestAnimationFrame(animate)
         c.clearRect(0,0,canvas.width,canvas.height)
         background.draw()
+       if (keys.w.pressed||keys.s.pressed||keys.a.pressed||keys.d.pressed){
+        battles.forEach(boundary => {
+            boundary.draw()
+            if(
+                rectangleColision({
+                    rectangle1:player,
+                    rectangle2:boundary
+                })
+            ){
+               console.log('battle!')
+            }
+        })}
+
         boundaries.forEach(boundary => {
             boundary.draw()
             if(
@@ -266,10 +331,23 @@ let drawforeground=false
         })
         entradas.forEach(entrada => {
             entrada.draw()
+            const overlappingArea=
+                (Math.min(
+                        player.position.x + player.width,
+                        entrada.position.x + entrada.width
+                    ) -
+                    Math.max(player.position.x, entrada.position.x)) *
+                (Math.min(
+                        player.position.y + player.height,
+                        entrada.position.y + entrada.height
+                    ) -
+                    Math.max(player.position.y, entrada.position.y))
             if(rectangleEntrada({
                     rectangle1:player,
                     rectangle3:entrada
                 })
+
+                && overlappingArea > (player.width*player.height) /2
             ){
                 switch(true){
                     case(entrada.symbol===1938):
@@ -277,6 +355,7 @@ let drawforeground=false
                         offset.mapaOverWorld.x=208
                         offset.mapaOverWorld.y=-1712
                         image.src='./img/Overworld.png'
+                        changeBattleArea(1,40,offset.mapaOverWorld)
                         changeCollisions(1,40,offset.mapaOverWorld)
                         changeEntradas(1,40,offset.mapaOverWorld)
                         background.position.x=208
@@ -285,17 +364,19 @@ let drawforeground=false
                     case(entrada.symbol===3897):
                         drawforeground=false
                         image.src='./img/casa.png'
-                        offset.mapaCasa.x=262
-                        offset.mapaCasa.y=-259
+                        offset.mapaCasa.x=255
+                        offset.mapaCasa.y=-193
+                        changeBattleArea(0,20,offset.mapaCasa)
                         changeCollisions(0,20,offset.mapaCasa)
                         changeEntradas(0,20,offset.mapaCasa)
-                        background.position.x=262
-                        background.position.y=-259
+                        background.position.x=255
+                        background.position.y=-193
                         break
                     case(entrada.symbol===3858):
                         drawforeground=true
                         image.src='./img/Forest.png'
                         foregroundImage.src='./foreground/ForestFG.png'
+                        changeBattleArea(2,25,offset.mapaForest)
                         changeCollisions(2,25,offset.mapaForest)
                         changeEntradas(2,25,offset.mapaForest)
                         background.position.x=130
@@ -307,53 +388,58 @@ let drawforeground=false
                         drawforeground=false
                         image.src='./img/Overworld.png'
                         offset.mapaOverWorld.x=-56
-                        offset.mapaOverWorld.y=-1736
+                        offset.mapaOverWorld.y=-1682
+                        changeBattleArea(1,40,offset.mapaOverWorld)
                         changeCollisions(1,40,offset.mapaOverWorld)
                         changeEntradas(1,40,offset.mapaOverWorld)
                         background.position.x=-56
-                        background.position.y=-1736
+                        background.position.y=-1682
                         break
                     case(entrada.symbol===3860):
                         drawforeground=true
                         image.src='./img/castle.png'
                         foregroundImage.src='./foreground/castleFG.png'
+                        changeBattleArea(3,40,offset.mapaCastle)
                         changeCollisions(3,40,offset.mapaCastle)
                         changeEntradas(3,40,offset.mapaCastle)
-                        background.position.x=-114
-                        background.position.y=-894
-                        foreground.position.x=-114
-                        foreground.position.y=-894
+                        background.position.x=-123
+                        background.position.y=-863
+                        foreground.position.x=-123
+                        foreground.position.y=-863
                         break
                     case (entrada.symbol===1922):
                         drawforeground=false
                         image.src='./img/Overworld.png'
-                        offset.mapaOverWorld.x=232
-                        offset.mapaOverWorld.y=-1313
+                        offset.mapaOverWorld.x=220
+                        offset.mapaOverWorld.y=-1265
                         changeCollisions(1,40,offset.mapaOverWorld)
+                        changeBattleArea(1,40,offset.mapaOverWorld)
                         changeEntradas(1,40,offset.mapaOverWorld)
-                        background.position.x=232
-                        background.position.y=-1313
+                        background.position.x=220
+                        background.position.y= -1265
                         break
                     case (entrada.symbol===3859):
                         drawforeground=true
                         image.src='./img/sand sung.png'
                         foregroundImage.src='./foreground/sand sungFG.png'
                         changeCollisions(4,50,offset.mapaSandSung)
+                        changeBattleArea(4,50,offset.mapaSandSung)
                         changeEntradas(4,50,offset.mapaSandSung)
                         background.position.x=400
-                        background.position.y=-1122
+                        background.position.y=-1000
                         foreground.position.x=400
-                        foreground.position.y=-1122
+                        foreground.position.y=-1000
                         break
                     case (entrada.symbol===3867):
                         drawforeground=false
                         image.src='./img/Overworld.png'
                         offset.mapaOverWorld.x=-500
-                        offset.mapaOverWorld.y=-1670
+                        offset.mapaOverWorld.y=-1622
                         changeCollisions(1,40,offset.mapaOverWorld)
+                        changeBattleArea(1,40,offset.mapaOverWorld)
                         changeEntradas(1,40,offset.mapaOverWorld)
                         background.position.x=-500
-                        background.position.y=-1670
+                        background.position.y=-1622
                         break
                     case (entrada.symbol===1617):
                         drawforeground=false
@@ -361,6 +447,7 @@ let drawforeground=false
                         offset.mapaOverWorld.x=-470
                         offset.mapaOverWorld.y=-1316
                         changeCollisions(1,40,offset.mapaOverWorld)
+                        changeBattleArea(1,40,offset.mapaOverWorld)
                         changeEntradas(1,40,offset.mapaOverWorld)
                         background.position.x=-470
                         background.position.y=-1316
@@ -369,6 +456,7 @@ let drawforeground=false
                         drawforeground=true
                         image.src='./img/ruined tower.png'
                         foregroundImage.src='./foreground/ruined towerFG.png'
+                        changeBattleArea(5,40,offset.mapaRuinedTower)
                         changeCollisions(5,40,offset.mapaRuinedTower)
                         changeEntradas(5,40,offset.mapaRuinedTower)
                         background.position.x=-120
@@ -381,43 +469,47 @@ let drawforeground=false
                         image.src='./img/haunted forest.png'
                         foregroundImage.src='./foreground/haunted forestFG.png'
                         offset.mapaHauntedForest.x=-441
-                        offset.mapaHauntedForest.y=-1560
+                        offset.mapaHauntedForest.y=-1460
+                        changeBattleArea(6,60,offset.mapaHauntedForest)
                         changeCollisions(6,60,offset.mapaHauntedForest)
                         changeEntradas(6,60,offset.mapaHauntedForest)
                         background.position.x=-441
-                        background.position.y=-1560
+                        background.position.y=-1460
                         foreground.position.x=-441
-                        foreground.position.y=-1560
+                        foreground.position.y=-1460
                         break
                     case (entrada.symbol===3863):
                         drawforeground=true
                         image.src='./img/haunted forest.png'
                         foregroundImage.src='./foreground/haunted forestFG.png'
                         offset.mapaHauntedForest.x=-441
-                        offset.mapaHauntedForest.y=24
+                        offset.mapaHauntedForest.y=0
+                        changeBattleArea(6,60,offset.mapaHauntedForest)
                         changeCollisions(6,60,offset.mapaHauntedForest)
                         changeEntradas(6,60,offset.mapaHauntedForest)
                         background.position.x=-441
-                        background.position.y=24
+                        background.position.y=0
                         foreground.position.x=-441
-                        foreground.position.y=24
+                        foreground.position.y=0
 
                         break
                     case (entrada.symbol===5778):
                         drawforeground=false
                         image.src='./img/Overworld.png'
                         offset.mapaOverWorld.x=-86
-                        offset.mapaOverWorld.y=-422
+                        offset.mapaOverWorld.y=-400
+                        changeBattleArea(1,40,offset.mapaOverWorld)
                         changeCollisions(1,40,offset.mapaOverWorld)
                         changeEntradas(1,40,offset.mapaOverWorld)
                         background.position.x=-86
-                        background.position.y=-422
+                        background.position.y=-400
                         break
                     case (entrada.symbol===5789):
                         drawforeground=false
                         image.src='./img/Overworld.png'
                         offset.mapaOverWorld.x=-83
                         offset.mapaOverWorld.y=-842
+                        changeBattleArea(1,40,offset.mapaOverWorld)
                         changeCollisions(1,40,offset.mapaOverWorld)
                         changeEntradas(1,40,offset.mapaOverWorld)
                         background.position.x=-83
@@ -428,6 +520,7 @@ let drawforeground=false
                         image.src='./img/Overworld.png'
                         offset.mapaOverWorld.x=-26
                         offset.mapaOverWorld.y=-362
+                        changeBattleArea(1,40,offset.mapaOverWorld)
                         changeCollisions(1,40,offset.mapaOverWorld)
                         changeEntradas(1,40,offset.mapaOverWorld)
                         background.position.x=-26
@@ -437,17 +530,19 @@ let drawforeground=false
                         drawforeground=false
                         image.src='./img/shop.png'
                         offset.mapaShop.x=201
-                        offset.mapaShop.y=-285
+                        offset.mapaShop.y=-232
+                        changeBattleArea(7,20,offset.mapaShop)
                         changeCollisions(7,20,offset.mapaShop)
                         changeEntradas(7,20,offset.mapaShop)
                         background.position.x=201
-                        background.position.y=-285
+                        background.position.y=-232
                         break
                     case (entrada.symbol===3833):
                         drawforeground=false
                         image.src='./img/Overworld.png'
                         offset.mapaOverWorld.x=-83
                         offset.mapaOverWorld.y=-161
+                        changeBattleArea(1,40,offset.mapaOverWorld)
                         changeCollisions(1,40,offset.mapaOverWorld)
                         changeEntradas(1,40,offset.mapaOverWorld)
                         background.position.x=-83
@@ -458,18 +553,20 @@ let drawforeground=false
                         image.src='./img/evil castle.png'
                         foregroundImage.src='./foreground/evil castleFG.png'
                         offset.mapaEvilCastle.x=-117
-                        offset.mapaEvilCastle.y=-930
+                        offset.mapaEvilCastle.y=-880
+                        changeBattleArea(8,40,offset.mapaEvilCastle)
                         changeCollisions(8,40,offset.mapaEvilCastle)
                         changeEntradas(8,40,offset.mapaEvilCastle)
                         background.position.x=-117
-                        background.position.y=-930
+                        background.position.y=-880
                         foreground.position.x=-117
-                        foreground.position.y=-930
+                        foreground.position.y=-880
                         break
                     case(entrada.symbol===3866):
                         drawforeground=true
                         image.src='./img/Forest.png'
                         foregroundImage.src='./foreground/ForestFG.png'
+                        changeBattleArea(2,25,offset.mapaForest)
                         changeCollisions(2,25,offset.mapaForest)
                         changeEntradas(9,25,offset.mapaForest)
                         background.position.x=130
@@ -482,11 +579,12 @@ let drawforeground=false
                         drawforeground=false
                         image.src='./img/Overworld.png'
                         offset.mapaOverWorld.x=-371
-                        offset.mapaOverWorld.y=-356
+                        offset.mapaOverWorld.y=-315
+                        changeBattleArea(1,40,offset.mapaOverWorld)
                         changeCollisions(1,40,offset.mapaOverWorld)
                         changeEntradas(1,40,offset.mapaOverWorld)
                         background.position.x=-371
-                        background.position.y=-356
+                        background.position.y=-315
                         break
                 }
             }
@@ -514,11 +612,13 @@ let drawforeground=false
                             y:boundary.position.y+3
                             }}
                     })
+
                 ){
                     console.log('coliding')
                     moving=true
                     break
                 }}
+
             /*for (let i = 0;i < entradas.length; i++){
                         let  entrada=entradas[i]
                         if(rectangleEntrada({
@@ -548,10 +648,8 @@ let drawforeground=false
             let boundary=boundaries[i]
             if(rectangleColision({
                 rectangle1:player,
-                rectangle2: {...boundary, position:{
-                        x:boundary.position.x+3,
-                        y:boundary.position.y
-                    }}
+                rectangle2:boundary
+
             })
             ){
                 console.log('coliding')
@@ -559,6 +657,7 @@ let drawforeground=false
                 break
             }
         }
+
             if(moving)
             movables.forEach((movable) => { movable.position.x+=3})
 
@@ -572,10 +671,7 @@ let drawforeground=false
                 let boundary=boundaries[i]
                 if(rectangleColision({
                     rectangle1:player,
-                    rectangle2: {...boundary, position:{
-                            x:boundary.position.x,
-                            y:boundary.position.y-3
-                        }}
+                    rectangle2:boundary
                 })
                 ){
                     console.log('coliding')
@@ -583,6 +679,7 @@ let drawforeground=false
                     break
                 }
             }
+
             if(moving)
             movables.forEach((movable) => { movable.position.y-=3})
 
@@ -595,10 +692,7 @@ let drawforeground=false
                 let boundary=boundaries[i]
                 if(rectangleColision({
                     rectangle1:player,
-                    rectangle2: {...boundary, position:{
-                            x:boundary.position.x-3,
-                            y:boundary.position.y
-                        }}
+                    rectangle2:boundary
                 })
                 ){
                     console.log('coliding')
@@ -606,6 +700,7 @@ let drawforeground=false
                     break
                 }
             }
+
             if(moving)
             movables.forEach((movable) => { movable.position.x-=3})
 
@@ -659,3 +754,4 @@ window.addEventListener('keyup',(e) => {
 
     }
 })
+
