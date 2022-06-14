@@ -2,6 +2,9 @@ const canvas = document.querySelector('canvas');
 const c =canvas.getContext ('2d')
 
 
+  gsap.to('#overlappingDiv',{
+opacity:1
+})
 
 canvas.width= 1024
 canvas.height= 576
@@ -120,29 +123,31 @@ entradaMap.forEach((row, i,) =>{
     function changeBattleArea(index,size,offset) {
        battleMap = []
 
-        for(let  i = 0; i < colisionsCasa[index].length; i += size) {
-            battleMap.push(colisionsCasa[index].slice(i, size + i))
 
-        }
+            for (let i = 0; i < colisionsCasa[index].length; i += size) {
+                battleMap.push(colisionsCasa[index].slice(i, size + i))
 
-       battles=[]
+            }
 
-        battleMap.forEach((row, i,) => {
-            row.forEach((symbol, j) => {
-                if(symbol ===0){
-                    battles.push(new Boundary({
-                        color:'green',
-                        position: {
-                            x:j* Boundary.width + offset.x,
-                            y:i* Boundary.height+ offset.y
-                        }}))
+            battles = []
 
-                }
+            battleMap.forEach((row, i,) => {
+                row.forEach((symbol, j) => {
+                    if (symbol === 0) {
+                        battles.push(new Boundary({
+                            color: 'green',
+                            position: {
+                                x: j * Boundary.width + offset.x,
+                                y: i * Boundary.height + offset.y
+                            }
+                        }))
 
+                    }
+
+                })
             })
-        })
-        movables=[background,foreground,...boundaries,...entradas,...battles]
-    }
+            movables = [background, foreground, ...boundaries, ...entradas, ...battles]
+         }
 function changeCollisions(index,size,offset) {
     colisionMap = []
 
@@ -299,24 +304,44 @@ function rectangleEntrada({rectangle1, rectangle3}){
     )
 }
 let drawforeground=false
-let battlezone=false
+//let battlezone=false
+const batalha={
+    initiated:false
+}
 //animation-----------------------------------------
     function animate(){
     window.requestAnimationFrame(animate)
         c.clearRect(0,0,canvas.width,canvas.height)
         background.draw()
-       if (keys.w.pressed||keys.s.pressed||keys.a.pressed||keys.d.pressed){
+        player.draw()
+        if(drawforeground===true){
+            foreground.draw()}
+
+        let moving=true
+        player.moving=false
+
+if (batalha.initiated) return
+
+
         battles.forEach(boundary => {
             boundary.draw()
+            //para batalhas
+            if (keys.w.pressed || keys.a.pressed || keys.s.pressed || keys.d.pressed) {
             if(
                 rectangleColision({
                     rectangle1:player,
                     rectangle2:boundary
                 })
+               && (player.width*player.height) /2
+                && Math.random()<0.0001
             ){
-               console.log('battle!')
+
+                console.log('battle')
+                batalha.initiated=true
+
+
             }
-        })}
+        }})
 
         boundaries.forEach(boundary => {
             boundary.draw()
@@ -326,6 +351,7 @@ let battlezone=false
                     rectangle2:boundary
                 })
             ){
+
                 console.log('coliding')
             }
         })
@@ -348,6 +374,8 @@ let battlezone=false
                 })
 
                 && overlappingArea > (player.width*player.height) /2
+
+
             ){
                 switch(true){
                     case(entrada.symbol===1938):
@@ -589,17 +617,15 @@ let battlezone=false
                 }
             }
         })
-        player.draw()
-        if(drawforeground===true){
-        foreground.draw()}
-       console.log(background.position.x,background.position.y)
+
+
+       //console.log(background.position.x,background.position.y)
 
 
 
         //movimento-velocidade
-        let moving=true
-
-        player.moving=false
+       /* let moving=true
+        player.moving=false*/
         if(keys.w.pressed && lastKey==='w') {
             player.moving=true
             player.image= player.sprites.up
@@ -619,23 +645,7 @@ let battlezone=false
                     break
                 }}
 
-            /*for (let i = 0;i < entradas.length; i++){
-                        let  entrada=entradas[i]
-                        if(rectangleEntrada({
-                            rectangle1:player,
-                            rectangle3: {...entrada, position:{
-                                    x:entrada.position.x,
-                                    y:entrada.position.y+3
-                                }}
-                        })
-                        ){
-                            if(entrada.symbol === 3865 || entrada.symbol === 3864 || entrada.symbol === 3863|| entrada.symbol ===3866|| entrada.symbol ===3862|| entrada.symbol === 3860
-                                || entrada.symbol ===3861|| entrada.symbol === 3857|| entrada.symbol === 3859|| entrada.symbol === 3858|| entrada.symbol ===1937)
-                            console.log('entrar!')
 
-
-
-                        }}*/
 
             if(moving)
             movables.forEach((movable) => { movable.position.y+=3})
