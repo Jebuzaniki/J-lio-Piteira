@@ -5,16 +5,45 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Fantasia Final</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body>
 <div id="wrapper">
-    <div
-            id="overlappingDiv">
+
+    <div id="overlappingDiv">
+    </div>
+    <div id="menuvida">
+        <h1>Player</h1>
+        <div style="position: relative">
+            <div id="barravida1"></div>
+            <div id="barravida2"></div>
+        </div>
+    </div>
+    <div id="menuvidaenemy">
+        <h1>Goblin</h1>
+        <div style="position: relative">
+            <div id="barravida3"></div>
+            <div id="barravida4"></div>
+        </div>
     </div>
     <canvas></canvas>
+    <div id="menu">
+        <div id="ataques">
+            <button>golpear</button>
+            <button>Ataque2</button>
 
+        </div>
+        <div id="tipoataque">
+            <h1>tipo de ataque</h1>
+        </div>
+    </div>
 </div>
+
 <script src="./data/colisions.js"></script>
 <script src="class.js"></script>
 <script src="index.js"></script>
@@ -22,6 +51,7 @@
 </body>
 </html>
 <style>
+
     body {
         background-color: black;
     }

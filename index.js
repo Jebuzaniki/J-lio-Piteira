@@ -245,7 +245,8 @@ const player = new Sprite({
         max: 3,
         w: 1.7,
         h: 4
-    }
+    },
+    animate: true
 
 
 })
@@ -321,7 +322,7 @@ function animate() {
     }
 
     let moving = true
-    player.moving = false
+    player.animate = false
 
     if (batalha.initiated) return
 
@@ -336,13 +337,16 @@ function animate() {
                     rectangle2: boundary
                 })
                 && (player.width * player.height) / 2
-                && Math.random() < 0.0000000000001
+                && Math.random() < 0.1
             ) {
                 window.cancelAnimationFrame(animationId)
                 console.log('battle')
                 batalha.initiated = true
                 RunBlinkAnimation()
-                animateBattle()
+                setTimeout(function () {
+                    animateBattle()
+
+                }, 4000)
             }
         }
     })
@@ -685,7 +689,7 @@ function animate() {
 
     //movimento-velocidade
     if (keys.w.pressed && lastKey === 'w') {
-        player.moving = true
+        player.animate = true
         player.image = player.sprites.up
         for (let i = 0; i < boundaries.length; i++) {
             let boundary = boundaries[i]
@@ -712,7 +716,7 @@ function animate() {
                 movable.position.y += 3
             })
     } else if (keys.a.pressed && lastKey === 'a') {
-        player.moving = true
+        player.animate = true
         player.image = player.sprites.right
 
         for (let i = 0; i < boundaries.length; i++) {
@@ -735,7 +739,7 @@ function animate() {
             })
 
     } else if (keys.s.pressed && lastKey === 's') {
-        player.moving = true
+        player.animate = true
         player.image = player.sprites.down
 
         for (let i = 0; i < boundaries.length; i++) {
@@ -757,7 +761,7 @@ function animate() {
             })
 
     } else if (keys.d.pressed && lastKey === 'd') {
-        player.moving = true
+        player.animate = true
         player.image = player.sprites.left
 
         for (let i = 0; i < boundaries.length; i++) {
@@ -784,11 +788,64 @@ function animate() {
 }
 
 animate()
+const battleBackgroundImage = new Image()
+battleBackgroundImage.src = './img/battleBackground/Background.png'
+const battleBackground = new Sprite({
+    position: {
+        x: 80,
+        y: -215
+    },
+    image: battleBackgroundImage
+})
+const Player2dImage = new Image()
+Player2dImage.src = './img/2d/idle/adventurer-idle-2-03.png'
+const Player2d = new Sprite({
+    position: {
+        x: 250,
+        y: 480
+    },
+    image: Player2dImage,
+    frames: {
+        max: 4
+    },
+    framesS: {
+        w: 2,
+        h: 10
+    },
+    animate: true
+})
+const MonsterImage = new Image()
+MonsterImage.src = './img/2d/idle/Idle.png'
+const Monster = new Sprite({
+    position: {
+        x: 600,
+        y: 440
+    },
+    image: MonsterImage,
+    frames: {
+        max: 4
+    },
+    framesS: {
+        w: 2,
+        h: 5
+    },
+    animate: true
+})
 
 function animateBattle() {
     window.requestAnimationFrame(animateBattle)
     console.log('animating battle')
+    battleBackground.draw()
+    Player2d.draw()
+    Monster.draw()
 }
+
+document.querySelectorAll('button').forEach(button => {
+    button.addEventListener('click', () => {
+
+    })
+})
+
 
 //movimento
 let lastKey = ''

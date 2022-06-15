@@ -2,11 +2,124 @@
     box-sizing: border-box;
 }
 
-.body {
+body {
+    height: 100vh;
     margin: 0;
     background: aliceblue;
 
 }
+
+button {
+    border: 0;
+    cursor: pointer;
+    background-color: #000;
+    font-family: 'Press Start 2P', cursive;
+    color: white;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #aaa;
+}
+
+#barravida1 {
+    height: 5px;
+    background-color: #ddd;
+    margin-top: 10px;
+}
+
+#barravida2 {
+    height: 5px;
+    background-color: green;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+#barravida3 {
+    height: 5px;
+    background-color: #ddd;
+    margin-top: 10px;
+}
+
+#barravida4 {
+    height: 5px;
+    background-color: green;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+#menu {
+    background-color: black;
+    height: 140px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    border-bottom: 4px white solid;
+    display: flex;
+    justify-content: space-between;
+}
+
+#ataques {
+    width: 66.66%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+#tipoataque {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 33.33%;
+    border-left: 4px white solid;
+    color: white;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.8rem;
+    text-align: center;
+}
+
+#menuvida {
+    background-color: black;
+    width: 250px;
+    height: 100px;
+    position: absolute;
+    top: 135px;
+    left: 0;
+    border: 4px white solid;
+    font-size: 0.8rem;
+    font-family: 'Press Start 2P', cursive;
+    color: white;
+    padding: 12px;
+    text-align: center;
+}
+
+#menuvidaenemy {
+    background-color: black;
+    width: 250px;
+    height: 100px;
+    position: absolute;
+    top: 135px;
+    right: 0;
+    border: 4px white solid;
+    font-size: 0.8rem;
+    font-family: 'Press Start 2P', cursive;
+    color: white;
+    padding: 12px;
+    text-align: center;
+}
+
+canvas {
+    z-index: -1;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
 
 #wrapper {
     position: relative;
