@@ -11,7 +11,6 @@ canvas.width = 1024
 canvas.height = 576
 
 let colisionMap = []
-
 for (let i = 0; i < colisionsCasa[0].length; i += 20) {
     colisionMap.push(colisionsCasa[0].slice(i, 20 + i))
 }
@@ -46,8 +45,8 @@ const offset = {
         y: -863
     },
     mapaSandSung: {
-        x: 400,
-        y: -1000
+        x: 350,
+        y: -1050
     },
     mapaRuinedTower: {
         x: -120,
@@ -519,10 +518,10 @@ function animate() {
                         changeCollisions(4, 50, offset.mapaSandSung)
                         changeBattleArea(4, 50, offset.mapaSandSung)
                         changeEntradas(4, 50, offset.mapaSandSung)
-                        background.position.x = 400
-                        background.position.y = -1000
-                        foreground.position.x = 400
-                        foreground.position.y = -1000
+                        background.position.x = 350
+                        background.position.y = -1050
+                        foreground.position.x = 350
+                        foreground.position.y = -1050
                     }, 1000)
                     break
                 case (3867):
@@ -702,13 +701,13 @@ function animate() {
 
                         drawforeground = false
                         image.src = './img/Overworld.png'
-                        offset.mapaOverWorld.x = -83
-                        offset.mapaOverWorld.y = -161
+                        offset.mapaOverWorld.x = -100
+                        offset.mapaOverWorld.y = -190
                         changeBattleArea(1, 40, offset.mapaOverWorld)
                         changeCollisions(1, 40, offset.mapaOverWorld)
                         changeEntradas(1, 40, offset.mapaOverWorld)
-                        background.position.x = -83
-                        background.position.y = -161
+                        background.position.x = -100
+                        background.position.y = -190
                     }, 1000)
                     break
                 case(3865):

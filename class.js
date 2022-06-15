@@ -117,7 +117,7 @@ class Boundary {
 
     draw() {
         if (this.color === 'red') {
-            c.fillStyle = 'rgba(255,0,0,0)'
+            c.fillStyle = 'rgba(255,0,0,0.2)'
             c.fillRect(this.position.x, this.position.y, this.width, this.height)
         }
         if (this.color === 'green') {
