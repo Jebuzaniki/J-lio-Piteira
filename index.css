@@ -1,0 +1,80 @@
+* {
+    box-sizing: border-box;
+}
+
+.body {
+    margin: 0;
+    background: aliceblue;
+
+}
+
+#wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+#overlappingDiv {
+    background-color: black;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.Blink {
+    animation: Fades 7s forwards;
+}
+
+.Fade {
+    animation: fade 2s forwards;
+
+}
+
+
+@keyframes fade {
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes Fades {
+    0% {
+        opacity: 0;
+    }
+    5% {
+        opacity: 1;
+    }
+    10% {
+        opacity: 0;
+    }
+    15% {
+        opacity: 1;
+    }
+    20% {
+        opacity: 0;
+    }
+    25% {
+        opacity: 1;
+    }
+    30% {
+        opacity: 0;
+    }
+    60% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+
+}
+
