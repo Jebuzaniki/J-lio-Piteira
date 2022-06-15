@@ -346,7 +346,7 @@ function animate() {
                         rectangle2: boundary
                     })
                     && (player.width * player.height) / 2
-                    && Math.random() < 0.001
+                    && Math.random() < 0.0005
                 ) {
                     window.cancelAnimationFrame(animationId)
                     console.log('battle')
@@ -1096,7 +1096,7 @@ function playBattle() {
 }
 
 function playSlash() {
-    audio.Slash.currentTime = 0
+    audio.Slash.currentTime = 1
     audio.Slash.volume = 0.20
     audio.Slash.play()
 
