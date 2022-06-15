@@ -14,34 +14,41 @@
 </head>
 <body>
 <div id="wrapper">
-
+    <div id="main-menu">
+        <button>Start</button>
+    </div>
     <div id="overlappingDiv">
-    </div>
-    <div id="menuvida">
-        <h1>Player</h1>
-        <div style="position: relative">
-            <div id="barravida1"></div>
-            <div id="barravida2"></div>
-        </div>
-    </div>
-    <div id="menuvidaenemy">
-        <h1>Goblin</h1>
-        <div style="position: relative">
-            <div id="barravida3"></div>
-            <div id="barravida4"></div>
-        </div>
-    </div>
-    <canvas></canvas>
-    <div id="menu">
-        <div id="ataques">
-            <button>golpear</button>
-            <button>Ataque2</button>
 
+    </div>
+    <div id="battlemenu" class="hide">
+        <div id="menuvida">
+            <h1>Player</h1>
+            <div style="position: relative">
+                <div id="barravida1"></div>
+                <div id="barravida2"></div>
+            </div>
         </div>
-        <div id="tipoataque">
-            <h1>tipo de ataque</h1>
+        <div id="menuvidaenemy">
+            <h1>Goblin</h1>
+            <div style="position: relative">
+                <div id="barravida3"></div>
+                <div id="barravida4"></div>
+            </div>
+        </div>
+        <div id="menu">
+            <div id="ataques">
+                <button>Golpear</button>
+                <button>Ataque 2</button>
+
+            </div>
+            <div id="tipoataque">
+                <h1>Tipo de ataque</h1>
+            </div>
         </div>
     </div>
+
+    <canvas></canvas>
+
 </div>
 
 <script src="./data/colisions.js"></script>

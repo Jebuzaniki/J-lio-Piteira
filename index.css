@@ -9,6 +9,24 @@ body {
 
 }
 
+#main-menu {
+    width: 100%;
+    height: 100vh;
+    background: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#main-menu button {
+    font-size: 2rem;
+    padding: 1rem 2rem;
+}
+
+.hide {
+    display: none;
+}
+
 button {
     border: 0;
     cursor: pointer;
@@ -16,6 +34,7 @@ button {
     font-family: 'Press Start 2P', cursive;
     color: white;
     font-size: 16px;
+
 }
 
 button:hover {
@@ -29,6 +48,8 @@ button:hover {
 }
 
 #barravida2 {
+    width: 100%;
+    transition: width 1s;
     height: 5px;
     background-color: green;
     position: absolute;
@@ -44,6 +65,8 @@ button:hover {
 }
 
 #barravida4 {
+    width: 100%;
+    transition: width 1s;
     height: 5px;
     background-color: green;
     position: absolute;
@@ -128,6 +151,7 @@ canvas {
 }
 
 #overlappingDiv {
+    z-index: 1;
     background-color: black;
     width: 100%;
     height: 100%;
@@ -147,12 +171,27 @@ canvas {
 
 }
 
+.FadeOut {
+    pointer-events: none;
+    user-select: none;
+    animation: fadeOut 2s forwards;
+}
+
 
 @keyframes fade {
     0% {
         opacity: 0;
     }
     50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes fadeOut {
+    0% {
         opacity: 1;
     }
     100% {
