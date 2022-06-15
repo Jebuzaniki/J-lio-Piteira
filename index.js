@@ -2,7 +2,9 @@ const canvas = document.querySelector('canvas');
 const c = canvas.getContext('2d')
 const audio = {
     Overworld: new Audio('./audio/Overworld.mp3'),
-    Battle: new Audio('./audio/Battle.mp3')
+    Battle: new Audio('./audio/Battle.mp3'),
+    Slash: new Audio('./audio/Slash.mp3'),
+    Smash: new Audio('./audio/Smash.mp3')
 }
 
 canvas.width = 1024
@@ -401,6 +403,9 @@ function animate() {
                     ChangeZone()
                     setTimeout(function () {
                         battlezone = true
+                    }, 2000)
+                    setTimeout(function () {
+
                         drawforeground = false
                         offset.mapaOverWorld.x = 208
                         offset.mapaOverWorld.y = -1712
@@ -410,12 +415,14 @@ function animate() {
                         changeEntradas(1, 40, offset.mapaOverWorld)
                         background.position.x = 208
                         background.position.y = -1712
+
                     }, 1000)
                     break
                 case(3897):
                     ChangeZone()
+                    battlezone = false
                     setTimeout(function () {
-                        battlezone = false
+
                         drawforeground = false
                         image.src = './img/casa.png'
                         offset.mapaCasa.x = 255
@@ -431,6 +438,9 @@ function animate() {
                     ChangeZone()
                     setTimeout(function () {
                         battlezone = true
+                    }, 2000)
+                    setTimeout(function () {
+
                         drawforeground = true
                         image.src = './img/Forest.png'
                         foregroundImage.src = './foreground/ForestFG.png'
@@ -447,6 +457,9 @@ function animate() {
                     ChangeZone()
                     setTimeout(function () {
                         battlezone = true
+                    }, 2000)
+                    setTimeout(function () {
+
                         drawforeground = false
                         image.src = './img/Overworld.png'
                         offset.mapaOverWorld.x = -56
@@ -461,7 +474,7 @@ function animate() {
                 case(3860):
                     ChangeZone()
                     setTimeout(function () {
-
+                        battlezone = false
                         drawforeground = true
                         image.src = './img/castle.png'
                         foregroundImage.src = './foreground/castleFG.png'
@@ -478,6 +491,9 @@ function animate() {
                     ChangeZone()
                     setTimeout(function () {
                         battlezone = true
+                    }, 2000)
+                    setTimeout(function () {
+
                         drawforeground = false
                         image.src = './img/Overworld.png'
                         offset.mapaOverWorld.x = 220
@@ -493,6 +509,9 @@ function animate() {
                     ChangeZone()
                     setTimeout(function () {
                         battlezone = true
+                    }, 2000)
+                    setTimeout(function () {
+
                         drawforeground = true
                         image.src = './img/sand sung.png'
                         foregroundImage.src = './foreground/sand sungFG.png'
@@ -509,6 +528,9 @@ function animate() {
                     ChangeZone()
                     setTimeout(function () {
                         battlezone = true
+                    }, 2000)
+                    setTimeout(function () {
+
                         drawforeground = false
                         image.src = './img/Overworld.png'
                         offset.mapaOverWorld.x = -500
@@ -524,6 +546,9 @@ function animate() {
                     ChangeZone()
                     setTimeout(function () {
                         battlezone = true
+                    }, 2000)
+                    setTimeout(function () {
+
                         drawforeground = false
                         image.src = './img/Overworld.png'
                         offset.mapaOverWorld.x = -470
@@ -539,6 +564,9 @@ function animate() {
                     ChangeZone()
                     setTimeout(function () {
                         battlezone = true
+                    }, 2000)
+                    setTimeout(function () {
+
                         drawforeground = true
                         image.src = './img/ruined tower.png'
                         foregroundImage.src = './foreground/ruined towerFG.png'
@@ -555,6 +583,9 @@ function animate() {
                     ChangeZone()
                     setTimeout(function () {
                         battlezone = true
+                    }, 2000)
+                    setTimeout(function () {
+
                         drawforeground = true
                         image.src = './img/haunted forest.png'
                         foregroundImage.src = './foreground/haunted forestFG.png'
@@ -573,6 +604,9 @@ function animate() {
                     ChangeZone()
                     setTimeout(function () {
                         battlezone = true
+                    }, 2000)
+                    setTimeout(function () {
+
                         drawforeground = true
                         image.src = './img/haunted forest.png'
                         foregroundImage.src = './foreground/haunted forestFG.png'
@@ -592,6 +626,9 @@ function animate() {
                     ChangeZone()
                     setTimeout(function () {
                         battlezone = true
+                    }, 2000)
+                    setTimeout(function () {
+
                         drawforeground = false
                         image.src = './img/Overworld.png'
                         offset.mapaOverWorld.x = -86
@@ -607,6 +644,9 @@ function animate() {
                     ChangeZone()
                     setTimeout(function () {
                         battlezone = true
+                    }, 2000)
+                    setTimeout(function () {
+
                         drawforeground = false
                         image.src = './img/Overworld.png'
                         offset.mapaOverWorld.x = -83
@@ -622,6 +662,9 @@ function animate() {
                     ChangeZone()
                     setTimeout(function () {
                         battlezone = true
+                    }, 2000)
+                    setTimeout(function () {
+
                         drawforeground = false
                         image.src = './img/Overworld.png'
                         offset.mapaOverWorld.x = -26
@@ -635,8 +678,9 @@ function animate() {
                     break
                 case(3864):
                     ChangeZone()
+                    battlezone = false
                     setTimeout(function () {
-                        battlezone = false
+
                         drawforeground = false
                         image.src = './img/shop.png'
                         offset.mapaShop.x = 201
@@ -652,6 +696,9 @@ function animate() {
                     ChangeZone()
                     setTimeout(function () {
                         battlezone = true
+                    }, 2000)
+                    setTimeout(function () {
+
                         drawforeground = false
                         image.src = './img/Overworld.png'
                         offset.mapaOverWorld.x = -83
@@ -667,6 +714,9 @@ function animate() {
                     ChangeZone()
                     setTimeout(function () {
                         battlezone = true
+                    }, 2000)
+                    setTimeout(function () {
+
                         drawforeground = true
                         image.src = './img/evil castle.png'
                         foregroundImage.src = './foreground/evil castleFG.png'
@@ -685,6 +735,9 @@ function animate() {
                     ChangeZone()
                     setTimeout(function () {
                         battlezone = true
+                    }, 2000)
+                    setTimeout(function () {
+
                         drawforeground = true
                         image.src = './img/Forest.png'
                         foregroundImage.src = './foreground/ForestFG.png'
@@ -702,6 +755,8 @@ function animate() {
                     ChangeZone()
                     setTimeout(function () {
                         battlezone = true
+                    }, 2000)
+                    setTimeout(function () {
                         drawforeground = false
                         image.src = './img/Overworld.png'
                         offset.mapaOverWorld.x = -371
@@ -754,7 +809,12 @@ function animate() {
             let boundary = boundaries[i]
             if (rectangleColision({
                 rectangle1: player,
-                rectangle2: boundary
+                rectangle2: {
+                    ...boundary, position: {
+                        x: boundary.position.x + 3,
+                        y: boundary.position.y
+                    }
+                }
 
             })
             ) {
@@ -799,7 +859,12 @@ function animate() {
             let boundary = boundaries[i]
             if (rectangleColision({
                 rectangle1: player,
-                rectangle2: boundary
+                rectangle2: {
+                    ...boundary, position: {
+                        x: boundary.position.x - 3,
+                        y: boundary.position.y
+                    }
+                }
             })
             ) {
                 console.log('coliding')
@@ -887,6 +952,7 @@ const attackButton = document.querySelector('#ataques button:first-of-type')
 
 attackButton.addEventListener('click', () => {
     if (!playerCanAttack) return
+    playSlash()
     Player2d.attack({
         attack: {
             name: 'Golpear',
@@ -899,6 +965,7 @@ attackButton.addEventListener('click', () => {
     playerCanAttack = false
     if (Monster.health > 0) {
         setTimeout(function () {
+            playSmash()
             Monster.attack({
                 attack: {
                     name: 'Golpear',
@@ -1024,5 +1091,19 @@ function playBattle() {
     audio.Overworld.pause()
     audio.Overworld.currentTime = 0
     audio.Battle.play()
+
+}
+
+function playSlash() {
+    audio.Slash.currentTime = 0
+    audio.Slash.volume = 0.20
+    audio.Slash.play()
+
+}
+
+function playSmash() {
+    audio.Smash.currentTime = 0
+    audio.Smash.volume = 0.20
+    audio.Smash.play()
 
 }
