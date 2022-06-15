@@ -340,6 +340,7 @@ function animate() {
             //para batalhas
             if (keys.w.pressed || keys.a.pressed || keys.s.pressed || keys.d.pressed) {
                 if (
+
                     rectangleColision({
                         rectangle1: player,
                         rectangle2: boundary
